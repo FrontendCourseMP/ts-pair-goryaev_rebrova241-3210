@@ -96,3 +96,84 @@ class MathExpression {
         }
     }
 }
+
+class CalculatorUI {
+    private form: HTMLFormElement;
+    private expressionInput: HTMLInputElement;
+    private errorMessage: HTMLDivElement;
+    private result: HTMLDivElement;
+    private clearBtn: HTMLButtonElement;
+    
+    constructor() {
+        this.form = document.getElementById('calculatorForm') as HTMLFormElement;
+        this.expressionInput = document.getElementById('expression') as HTMLInputElement;
+        this.errorMessage = document.getElementById('errorMessage') as HTMLDivElement;
+        this.result = document.getElementById('result') as HTMLDivElement;
+        this.clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
+        
+        this.initializeEvents();
+    }
+    
+    private initializeEvents(): void {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.clearBtn.addEventListener('click', this.handleClear.bind(this));
+        this.expressionInput.addEventListener('input', this.handleInput.bind(this));
+    }
+    
+    private handleSubmit(event: Event): void {
+        event.preventDefault();
+        
+        const inputValue = this.expressionInput.value.trim();
+        const mathExpression = new MathExpression(inputValue);
+        
+        const validation = mathExpression.validate();
+        if (validation.status === 'invalid') {
+            this.displayError(validation.message);
+            return;
+        }
+        
+        this.clearError();
+        
+        const calculation = mathExpression.calculate();
+        this.displayResult(calculation);
+    }
+    
+    private handleClear(): void {
+        this.expressionInput.value = '';
+        this.clearError();
+        this.clearResult();
+        this.expressionInput.focus();
+    }
+    
+    private handleInput(): void {
+        this.clearError();
+    }
+    
+    private displayError(message: string): void {
+        this.errorMessage.textContent = message;
+        this.clearResult();
+    }
+    
+    private displayResult(calculation: CalculationResult): void {
+        if (calculation.status === 'success' && calculation.value !== undefined) {
+            this.result.textContent = calculation.value.toString();
+            this.result.className = 'result success';
+        } else if (calculation.error) {
+            this.result.textContent = calculation.error;
+            this.result.className = 'result error';
+        }
+    }
+    
+    private clearError(): void {
+        this.errorMessage.textContent = '';
+    }
+    
+    private clearResult(): void {
+        this.result.textContent = '';
+        this.result.className = 'result';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new CalculatorUI();
+});
