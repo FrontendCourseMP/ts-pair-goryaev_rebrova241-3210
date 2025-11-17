@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практика</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор математических выражений</h1>
+        <form id="calculatorForm" class="calculator-form">
+            <div class="input-group">
+                <label for="expression">Введите математическое выражение:</label>
+                <input type="text" id="expression" placeholder="Например: 2 + 3 * (4 - 1)" required>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-calculate">Вычислить</button>
+                <button type="button" class="btn btn-clear" id="clearBtn">Очистить</button>
+            </div>
+        </form>
+        <div class="result-section">
+            <h3>Результат:</h3>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    <script src="dist/index.js"></script>
+</body>
+</html>
