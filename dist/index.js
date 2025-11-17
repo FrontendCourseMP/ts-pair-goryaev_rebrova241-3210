@@ -34,13 +34,43 @@ var MathExpression = /** @class */ (function () {
                 message: 'Несбалансированные скобки'
             };
         }
+        var operatorRegex = /[+\-*/]{2,}/;
+        if (operatorRegex.test(cleaned)) {
+            return {
+                status: 'invalid',
+                message: 'Некорректное использование операторов (несколько подряд)'
+            };
+        }
         return { status: 'valid', message: '' };
     };
-    MathExpression.prototype.getExpression = function () {
-        return this.originalExpression;
-    };
-    MathExpression.prototype.getCleanedExpression = function () {
-        return this.cleanExpression();
+    MathExpression.prototype.calculate = function () {
+        var validation = this.validate();
+        if (validation.status === 'invalid') {
+            return {
+                status: 'error',
+                error: validation.message
+            };
+        }
+        var cleanedExpression = this.cleanExpression();
+        try {
+            var result = new Function("return ".concat(cleanedExpression))();
+            if (typeof result !== 'number' || !isFinite(result)) {
+                return {
+                    status: 'error',
+                    error: 'Некорректный результат вычисления'
+                };
+            }
+            return {
+                status: 'success',
+                value: result
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                error: 'Ошибка при вычислении выражения'
+            };
+        }
     };
     return MathExpression;
 }());
