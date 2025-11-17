@@ -63,3 +63,47 @@ class MathExpression {
         return this.cleanExpression();
     }
 }
+
+const operatorRegex = /[+\-*/]{2,}/;
+if (operatorRegex.test(cleaned)) {
+    return { 
+        status: 'invalid', 
+        message: 'Некорректное использование операторов (несколько подряд)' 
+    };
+}
+
+// return { status: 'valid', message: '' };
+// }
+
+calculate(): CalculationResult {
+const validation = this.validate();
+if (validation.status === 'invalid') {
+    return { 
+        status: 'error', 
+        error: validation.message
+    };
+}
+
+const cleanedExpression = this.cleanExpression();
+
+try {
+    const result = new Function(`return ${cleanedExpression}`)();
+    
+    if (typeof result !== 'number' || !isFinite(result)) {
+        return { 
+            status: 'error', 
+            error: 'Некорректный результат вычисления'
+        };
+    }
+    
+    return { 
+        status: 'success', 
+        value: result
+    };
+} catch (error) {
+    return { 
+        status: 'error', 
+        error: 'Ошибка при вычислении выражения'
+    };
+}
+}
