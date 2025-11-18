@@ -25,6 +25,27 @@
             <div class="result" id="result"></div>
         </div>
     </div>
-    <script src="dist/index.js"></script>
+    
+    <div class="container fio-container">
+        <h1>Введите ФИО</h1>
+        <form id="fioForm">
+            <label>Фамилия <span style="color:red">*</span></label>
+            <input type="text" id="surname" autocomplete="off">
+            <div class="error-msg" id="surnameError"></div>
+
+            <label>Имя <span style="color:red">*</span></label>
+            <input type="text" id="name" autocomplete="off">
+            <div class="error-msg" id="nameError"></div>
+
+            <label>Отчество</label>
+            <input type="text" id="patronymic" autocomplete="off">
+            <div class="error-msg" id="patronymicError"></div>
+
+            <button type="submit">Показать ФИО с инициалами</button>
+        </form>
+        <div class="result" id="fioResult"></div>
+    </div>
+
+    <script src="dist/index_prac1.js"></script>
 </body>
 </html>

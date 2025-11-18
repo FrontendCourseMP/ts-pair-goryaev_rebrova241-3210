@@ -74,3 +74,65 @@ var MathExpression = /** @class */ (function () {
     };
     return MathExpression;
 }());
+var CalculatorUI = /** @class */ (function () {
+    function CalculatorUI() {
+        this.form = document.getElementById('calculatorForm');
+        this.expressionInput = document.getElementById('expression');
+        this.errorMessage = document.getElementById('errorMessage');
+        this.result = document.getElementById('result');
+        this.clearBtn = document.getElementById('clearBtn');
+        this.initializeEvents();
+    }
+    CalculatorUI.prototype.initializeEvents = function () {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.clearBtn.addEventListener('click', this.handleClear.bind(this));
+        this.expressionInput.addEventListener('input', this.handleInput.bind(this));
+    };
+    CalculatorUI.prototype.handleSubmit = function (event) {
+        event.preventDefault();
+        var inputValue = this.expressionInput.value.trim();
+        var mathExpression = new MathExpression(inputValue);
+        var validation = mathExpression.validate();
+        if (validation.status === 'invalid') {
+            this.displayError(validation.message);
+            return;
+        }
+        this.clearError();
+        var calculation = mathExpression.calculate();
+        this.displayResult(calculation);
+    };
+    CalculatorUI.prototype.handleClear = function () {
+        this.expressionInput.value = '';
+        this.clearError();
+        this.clearResult();
+        this.expressionInput.focus();
+    };
+    CalculatorUI.prototype.handleInput = function () {
+        this.clearError();
+    };
+    CalculatorUI.prototype.displayError = function (message) {
+        this.errorMessage.textContent = message;
+        this.clearResult();
+    };
+    CalculatorUI.prototype.displayResult = function (calculation) {
+        if (calculation.status === 'success' && calculation.value !== undefined) {
+            this.result.textContent = calculation.value.toString();
+            this.result.className = 'result success';
+        }
+        else if (calculation.error) {
+            this.result.textContent = calculation.error;
+            this.result.className = 'result error';
+        }
+    };
+    CalculatorUI.prototype.clearError = function () {
+        this.errorMessage.textContent = '';
+    };
+    CalculatorUI.prototype.clearResult = function () {
+        this.result.textContent = '';
+        this.result.className = 'result';
+    };
+    return CalculatorUI;
+}());
+document.addEventListener('DOMContentLoaded', function () {
+    new CalculatorUI();
+});

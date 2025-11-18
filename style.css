@@ -5,29 +5,37 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: #74b9ff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    gap: 30px;
+    flex-wrap: wrap;
 }
 
 .container {
     background: white;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
+    transition: transform 0.3s;
+}
+
+.container:hover {
+    transform: translateY(-5px);
 }
 
 h1 {
     text-align: center;
     color: #2d3436;
-    margin-bottom: 25px;
-    font-size: 1.5em;
+    margin-bottom: 28px;
+    font-size: 1.6em;
+    font-weight: 600;
 }
 
 .calculator-form {
@@ -47,37 +55,63 @@ label {
 
 input[type="text"] {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 6px;
+    padding: 14px;
+    border: 2px solid #dfe6e9;
+    border-radius: 10px;
     font-size: 16px;
-    transition: border-color 0.3s;
+    transition: all 0.3s;
 }
 
 input[type="text"]:focus {
     outline: none;
     border-color: #74b9ff;
+    box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.2);
 }
 
-.error-message {
-    color: #d63031;
+input.error {
+    border-color: #e17055 !important;
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 4px rgba(225, 112, 85, 0.2);
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+.error-message,
+.error-msg {
+    color: #e17055;
     font-size: 14px;
-    margin-top: 5px;
-    min-height: 20px;
+    margin-top: 8px;
+    min-height: 22px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.error-msg::before {
+    content: "Ошибка";
+    font-size: 18px;
 }
 
 .buttons {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .btn {
-    padding: 12px 20px;
+    padding: 14px;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     flex: 1;
 }
 
@@ -88,41 +122,87 @@ input[type="text"]:focus {
 
 .btn-calculate:hover {
     background: #00a085;
+    transform: translateY(-2px);
 }
 
 .btn-clear {
-    background: #dfe6e9;
+    background: #b2bec3;
     color: #2d3436;
 }
 
 .btn-clear:hover {
-    background: #b2bec3;
+    background: #636e72;
+    color: white;
 }
 
 .result-section {
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border: 1px solid #c0c2c4;
+    padding: 20px;
+    background: #f1f2f6;
+    border-radius: 12px;
+    border-left: 5px solid #74b9ff;
 }
 
 .result-section h3 {
     color: #2d3436;
-    margin-bottom: 10px;
-    font-size: 1.1em;
+    margin-bottom: 12px;
+    font-size: 1.2em;
 }
 
 .result {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result.success { color: #00b894; }
+.result.error { color: #e17055; }
+
+
+#fioForm label {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-weight: 600;
     color: #2d3436;
-    min-height: 30px;
 }
 
-.success {
-    color: #00b894;
+#fioForm input {
+    margin-bottom: 4px;
 }
 
-.error {
-    color: #d63031;
+#fioForm button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 16px;
+    background: #0984e3;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.3s;
 }
+
+#fioForm button:hover {
+    background: #0069d9;
+    transform: translateY(-2px);
+}
+
+
+#fioResult {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 14px;
+    min-height: 90px;
+    box-shadow: 0 8px 20px rgba(9, 132, 227, 0.3);
+    letter-spacing: 1.2px;
+}
+
+
