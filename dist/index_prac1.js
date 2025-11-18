@@ -30,20 +30,28 @@ var FioUI = /** @class */ (function () {
             e.preventDefault();
             _this.process();
         });
+        // Очистка ошибки при вводе
+        [this.surname, this.name, this.patronymic].forEach(function (input) {
+            return input.addEventListener('input', function () {
+                input.classList.remove('error');
+                var errEl = document.getElementById(input.id + 'Error');
+                errEl.textContent = '';
+            });
+        });
     }
     FioUI.prototype.process = function () {
+        var _this = this;
         this.clearErrors();
         var s = this.surname.value.trim();
         var n = this.name.value.trim();
         var p = this.patronymic.value.trim();
         var ok = true;
-        // Базовая проверка (пока без красивых эффектов)
         if (!s) {
             this.error(this.surname, this.surnameErr, 'Фамилия обязательна');
             ok = false;
         }
         else if (!FioProcessor.isValid(s)) {
-            this.error(this.surname, this.surnameErr, 'Неправильная фамилия');
+            this.error(this.surname, this.surnameErr, 'Только русские буквы, первая — заглавная');
             ok = false;
         }
         if (!n) {
@@ -51,21 +59,27 @@ var FioUI = /** @class */ (function () {
             ok = false;
         }
         else if (!FioProcessor.isValid(n)) {
-            this.error(this.name, this.nameErr, 'Неправильное имя');
+            this.error(this.name, this.nameErr, 'Только русские буквы, первая — заглавная');
             ok = false;
         }
         if (p && !FioProcessor.isValid(p)) {
-            this.error(this.patronymic, this.patrErr, 'Неправильное отчество');
+            this.error(this.patronymic, this.patrErr, 'Только русские буквы, первая — заглавная');
             ok = false;
         }
         if (!ok)
             return;
-        this.result.textContent = "".concat(s, " ").concat(FioProcessor.initial(n)).concat(p ? ' ' + FioProcessor.initial(p) : '');
+        this.result.textContent = "".concat(s, " ").concat(FioProcessor.initial(n)).concat(p ? ' ' + FioProcessor.initial(p) : '', ".");
+        this.result.style.opacity = '0';
+        this.result.style.transform = 'translateY(10px)';
+        setTimeout(function () {
+            _this.result.style.transition = 'all 0.4s ease';
+            _this.result.style.opacity = '1';
+            _this.result.style.transform = 'translateY(0)';
+        }, 50);
     };
     FioUI.prototype.clearErrors = function () {
         [this.surname, this.name, this.patronymic].forEach(function (i) { return i.classList.remove('error'); });
         [this.surnameErr, this.nameErr, this.patrErr].forEach(function (e) { return e.textContent = ''; });
-        this.result.textContent = '';
     };
     FioUI.prototype.error = function (input, el, msg) {
         input.classList.add('error');
@@ -73,5 +87,4 @@ var FioUI = /** @class */ (function () {
     };
     return FioUI;
 }());
-// Запуск
 document.addEventListener('DOMContentLoaded', function () { return new FioUI(); });

@@ -27,6 +27,15 @@ class FioUI {
             e.preventDefault();
             this.process();
         });
+
+        // Очистка ошибки при вводе
+        [this.surname, this.name, this.patronymic].forEach(input =>
+            input.addEventListener('input', () => {
+                input.classList.remove('error');
+                const errEl = document.getElementById(input.id + 'Error') as HTMLElement;
+                errEl.textContent = '';
+            })
+        );
     }
 
     private process() {
@@ -38,24 +47,29 @@ class FioUI {
 
         let ok = true;
 
-        // Базовая проверка (пока без красивых эффектов)
         if (!s) { this.error(this.surname, this.surnameErr, 'Фамилия обязательна'); ok = false; }
-        else if (!FioProcessor.isValid(s)) { this.error(this.surname, this.surnameErr, 'Неправильная фамилия'); ok = false; }
+        else if (!FioProcessor.isValid(s)) { this.error(this.surname, this.surnameErr, 'Только русские буквы, первая — заглавная'); ok = false; }
 
         if (!n) { this.error(this.name, this.nameErr, 'Имя обязательно'); ok = false; }
-        else if (!FioProcessor.isValid(n)) { this.error(this.name, this.nameErr, 'Неправильное имя'); ok = false; }
+        else if (!FioProcessor.isValid(n)) { this.error(this.name, this.nameErr, 'Только русские буквы, первая — заглавная'); ok = false; }
 
-        if (p && !FioProcessor.isValid(p)) { this.error(this.patronymic, this.patrErr, 'Неправильное отчество'); ok = false; }
+        if (p && !FioProcessor.isValid(p)) { this.error(this.patronymic, this.patrErr, 'Только русские буквы, первая — заглавная'); ok = false; }
 
         if (!ok) return;
 
-        this.result.textContent = `${s} ${FioProcessor.initial(n)}${p ? ' ' + FioProcessor.initial(p) : ''}`;
+        this.result.textContent = `${s} ${FioProcessor.initial(n)}${p ? ' ' + FioProcessor.initial(p) : ''}.`;
+        this.result.style.opacity = '0';
+        this.result.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+            this.result.style.transition = 'all 0.4s ease';
+            this.result.style.opacity = '1';
+            this.result.style.transform = 'translateY(0)';
+        }, 50);
     }
 
     private clearErrors() {
         [this.surname, this.name, this.patronymic].forEach(i => i.classList.remove('error'));
         [this.surnameErr, this.nameErr, this.patrErr].forEach(e => e.textContent = '');
-        this.result.textContent = '';
     }
 
     private error(input: HTMLInputElement, el: HTMLElement, msg: string) {
@@ -64,5 +78,4 @@ class FioUI {
     }
 }
 
-// Запуск
 document.addEventListener('DOMContentLoaded', () => new FioUI());

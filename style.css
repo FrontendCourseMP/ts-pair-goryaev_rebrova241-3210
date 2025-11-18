@@ -205,4 +205,32 @@ input.error {
     letter-spacing: 1.2px;
 }
 
+.error-msg {
+    color: #e17055;
+    font-size: 14px;
+    margin-top: 8px;
+    min-height: 22px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.error-msg:not(:empty) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.error-msg::before {
+    content: "Ошибка";
+    margin-right: 6px;
+    font-size: 16px;
+}
+
+#fioResult {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
 
