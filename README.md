@@ -10,7 +10,9 @@
 5. Just-validate (самая простая для базовых форм, не требует зависимостей)
 
 Just-validate:
+
 точка входа: import JustValidate from 'just-validate'
+
 Основные методы/функции/классы для работы с валидацией формы:
 1. new JustValidate() - возвращает экземпляр валидатора
 2. .addField(selector, rules) - определяет правила валидации для нового поля
@@ -19,6 +21,7 @@ Just-validate:
 5. .onFail(callback) - вызов при ошибках валидации
 6. .destroy() - удаление валидатора
 7. .setCurrentLocale(locale) - локализация ошибок
+
 Минимальный набор для работы с валидацией форм:
 1. new JustValidate() - создание валидатора
 2. .addField() - добавление полей
